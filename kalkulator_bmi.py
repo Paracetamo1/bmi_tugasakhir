@@ -1,11 +1,12 @@
 import tkinter as tk
 from tkinter import ttk
-from formula import hitung_bmi, bb_status, ideal_bb
+from rumus import hitung_bmi, bb_status, ideal_bb
+import time
 
 class BMIKalkulator:
     def __init__(self, root):
         self.root = root
-        self.root.title('Kalkulator Body Mass Index (BMI)')
+        self.root.title('Kalkulator BMI')
         self.create_widgets()
 
     def create_widgets(self):
@@ -47,11 +48,19 @@ class BMIKalkulator:
             tb = float(self.tb_var.get())
             bb = float(self.bb_var.get())
 
+            #nested loop hitung waktu mundur
+            for i in range(3, 0, -1):
+                self.hasil_label.config(text=f'Menghitung data anda... {i}')
+                self.root.update()
+                time.sleep(1)
+
+            #menghitung BMI, BB status, dan ideal BB
             bmi = hitung_bmi(tb, bb)
             bb_stat = bb_status(bmi)
             ideal_bb_kg = ideal_bb(tb, bb, self.gender.get())
-
-            self.hasil_label.config(text=f'Skor BMI: {bmi:.2f}\nStatus: {bb_stat}\nTarget BB Ideal: {ideal_bb_kg:.2f} kg')
+            self.hasil_label.config(text=f'Skor BMI: {bmi:.2f}\nStatus: {bb_stat}\nTarget Berat Badan Ideal: {ideal_bb_kg:.2f} kg')
+        
+        #error handling
         except ValueError:
             self.hasil_label.config(text='Error: Masukkan angka')
 
